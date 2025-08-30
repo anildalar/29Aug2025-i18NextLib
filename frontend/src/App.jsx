@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import i18n from './i18n'
+import { useTranslation } from 'react-i18next';
 //import someDefault from 'somelib';
 import anil from 'axios';
 
@@ -11,9 +12,17 @@ import { BASE_URL } from './helper/Helper';
 //2. Function defination area
 function App() {
   //2.1 Hooks Area
+   const { t } = useTranslation();
   const [language,setLanguage] = useState([]);
 
   useEffect(()=>{
+    //get the localstorage value
+    let l = window.localStorage.getItem('lang');
+    console.log(l);
+     i18n.changeLanguage(l);
+  },[]);
+  useEffect(()=>{
+
     try {
         anil.get(`${BASE_URL}/api/i18n/locales`)
           .then(function (r) {
@@ -36,6 +45,7 @@ function App() {
   //2.2 Function defination area
   const changeLanguage = (lng) => {
     console.log('lng>>>>>>>>',lng);
+    window.localStorage.setItem("lang",lng);
     i18n.changeLanguage(lng);
   }
   //2.3 Return statement
@@ -60,8 +70,8 @@ function App() {
                     </ul>
                   </div>
                 </div>
-
-              <h1>Restaurent {i18n.t('palak')} </h1>
+              <br />
+              <h1>Restaurent {t('anil')} </h1>
           </div>
         </div>
     </>
